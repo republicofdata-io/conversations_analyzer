@@ -44,6 +44,7 @@ final as (
 
         s_social_network_posts.social_network_source,
         s_social_network_posts.conversation_natural_key,
+        count(s_social_network_posts.post_natural_key) over (partition by s_social_network_posts.conversation_natural_key) as conversation_posts_count,
 
         s_social_network_posts.post_natural_key,
         s_social_network_posts.post_text,
@@ -75,5 +76,5 @@ final as (
 )
 
 select * from final
+where date(article_publication_ts) = '2024-05-28'
 order by article_publication_ts desc, social_network_conversation_fk, post_creation_ts
-limit 1000
